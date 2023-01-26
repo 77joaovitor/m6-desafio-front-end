@@ -15,9 +15,9 @@ const Calculator = () => {
     }
   );
 
-  const { calculate, daysToAdd }: any = useContext(AddContext);
+  const { calculate, daysToAdd } = useContext(AddContext);
   return (
-    <Container onSubmit={handleSubmit(calculate)}>
+    <Container onSubmit={handleSubmit(calculate as () => void)}>
       <h1>Simule sua antecipação</h1>
       <div>
         <span>Informe o valor da venda *</span>
@@ -34,7 +34,7 @@ const Calculator = () => {
       </div>
       <div>
         <div id="infoDays">
-          {daysToAdd?.map((elem: any) => (
+          {daysToAdd?.map((elem: number) => (
             <p className="pDays">{elem}</p>
           ))}
         </div>
