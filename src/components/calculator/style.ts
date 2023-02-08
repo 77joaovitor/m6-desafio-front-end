@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.form`
-  height: 70vh;
+  padding: 10px;
   width: 45vw;
   background-color: white;
   display: flex;
@@ -57,6 +57,12 @@ const Container = styled.form`
     width: 80%;
     height: 3rem;
     background-color: #6868ff;
+  }
+  .error {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 `;
 

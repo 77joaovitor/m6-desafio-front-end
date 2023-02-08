@@ -4,33 +4,59 @@ import { AddContext } from "../../context/calculateContext";
 import { useContext } from "react";
 import * as React from "react";
 import AddDays from "../addDays";
+import { ErrorMessage } from "@hookform/error-message";
+
+interface FormInputs {
+  singleErrorInput: undefined;
+  amount: undefined;
+  installments: undefined;
+  mdr: undefined;
+  input: any;
+  message: string;
+}
 
 const Calculator = () => {
-  const { register, handleSubmit, control } = useForm();
-  const [openModalDays, setOpenModalDays] = React.useState(false);
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "days", // unique name for your Field Array
-    }
-  );
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm<FormInputs>();
 
+  console.log(errors);
   const { calculate, daysToAdd } = useContext(AddContext);
   return (
     <Container onSubmit={handleSubmit(calculate as () => void)}>
       <h1>Simule sua antecipação</h1>
       <div>
         <span>Informe o valor da venda *</span>
-        <input type="text" id="amount" {...register("amount")} />
+        <input
+          type="text"
+          id="amount"
+          {...register("amount", { required: "This is required." })}
+        />
+        {errors.amount && <p className="error">{errors.amount.message}</p>}
       </div>
       <div>
         <span>Em quantas parcelas *</span>
-        <input type="text" id="installments" {...register("installments")} />
+        <input
+          type="text"
+          id="installments"
+          {...register("installments", { required: "This is required." })}
+        />
+        {errors.installments && (
+          <p className="error">{errors.installments.message}</p>
+        )}
       </div>
       <div>
         <span>Informe o percentual de MDR *</span>
 
-        <input type="text" id="mdr" {...register("mdr")} />
+        <input
+          type="text"
+          id="mdr"
+          {...register("mdr", { required: "This is required." })}
+        />
+        {errors.mdr && <p className="error">{errors.mdr.message}</p>}
       </div>
       <div>
         <div id="infoDays">
@@ -39,29 +65,6 @@ const Calculator = () => {
           ))}
         </div>
         <AddDays />
-        {/* <form>
-          <span>Informe as dias</span>
-          <input type="number" className="addDays" />
-          <button
-            id="buttonDays"
-            onClick={(event) => {
-              event.preventDefault();
-
-              setOpenModalDays(true);
-              // append({ value: "" }, { focusName: "value" });
-            }}
-          >
-            Adicionar dia
-          </button>
-        </form> */}
-        {/* {fields.map((field, index) => (
-          <section className="addDays" key={field.id}>
-            <input
-              className="inputAddDays"
-              {...register(`days.${index}.value`)}
-            />
-          </section>
-        ))} */}
       </div>
       <button type="submit">Calcular</button>
     </Container>
